@@ -6,7 +6,7 @@
 #ifndef ACA_LAB3_UTIL_H
 #define ACA_LAB3_UTIL_H
 
-#define XMM_ALIGNMENT_BYTES 16
+#define XMM_ALIGNMENT_BYTES 32
 
 void matrixCreationNByN_1D(int r, int c, float **mat_a);
 
