@@ -67,12 +67,6 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
-    printNByCMat(mat_a, n, n);
-    printf("\n");
-    printVector(vec_b, n);
-    printf("\n");
-    // printNByCMat(&mat_a, n, n);
-
     for (int i = 0; i < n; i += 1) {
         vec_c[i] = 0.0;
         int j = 0;
@@ -83,7 +77,6 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 __m512 xv = _mm512_mul_ps(x, v);
                 float result = _mm512_mask_reduce_add_ps(0xFFFF, xv);
                 vec_c[i] += result;
-                printf("%f\n", result);
             }
         }
         // if (rest > 0) {
