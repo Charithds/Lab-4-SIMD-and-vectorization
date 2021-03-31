@@ -8,7 +8,7 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 1
+#define REPEATED_TIMES 200
 
 // Matrix Vector Drivers
 void matvec_simple_listing5(int n, float *vec_c,
