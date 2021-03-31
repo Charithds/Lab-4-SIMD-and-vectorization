@@ -68,20 +68,25 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     int rest = n - unrolled_num;
 
     printNByCMat(mat_a, n, n);
+    printf("\n");
+    printVector(vec_b, n);
+    printf("\n");
     // printNByCMat(&mat_a, n, n);
 
     for (int i = 0; i < n; i += 1) {
         int j = 0;
-        for (int k = 0; k < unroll16Size; ++k) {
+        for (int k = 0; k < unroll16Size; k++) {
             for (; j < unrolled_num; j += 16) {
 
                 // load next 16 floats from input vector
                 __m512 x = _mm512_load_ps(&vec_b[j]);
                 // __m512 v = _mm512_load_ps(&vec_b[j]);
                 __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
-                __m512 rslt = _mm512_mul_ps(x, v);
+                __m512 xv = _mm512_mul_ps(x, v);
+                float result = _mm512_mask_reduce_add_ps(0xFF, xv);
+                vec_c[i] = result;
+                printf("%f\n", result);
 
-                 vec_c[i] += _mm512_cvtss_f32(rslt);
             }
         }
         // if (rest > 0) {
@@ -132,4 +137,11 @@ void printVector(const float *vec, int n) {
         printf("%3.3f  ", vec[i]);
     }
     printf("\n");
+}
+
+void print_vector_ps(__m128 v) {
+    const float *sv = (float *) &v;
+
+    printf("%f %f %f %f\n",
+           sv[0], sv[1], sv[2], sv[3]);
 }
