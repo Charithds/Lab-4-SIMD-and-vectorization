@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"sse_methods.h": "c",
+		"main_drivers.h": "c"
+	}
+}

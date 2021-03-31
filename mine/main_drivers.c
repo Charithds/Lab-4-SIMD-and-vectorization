@@ -8,7 +8,7 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 200
+#define REPEATED_TIMES 1
 
 // Matrix Vector Drivers
 void matvec_simple_listing5(int n, float *vec_c,
@@ -67,6 +67,9 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
+    printNByCMat(&mat_a, n, n);
+    // printNByCMat(&mat_a, n, n);
+
     for (int i = 0; i < n; i += 1) {
         int j = 0;
         for (int k = 0; k < unroll16Size; ++k) {
@@ -110,4 +113,23 @@ void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n
     }
     mean = Average(times, REPEATED_TIMES);
     printf("Average time : %f\n", mean);
+}
+
+
+void printNByCMat(const float *mat, int n, int c) {
+    if (mat != NULL) {
+        for (int j = 0; j < n; ++j) {
+            for (int i = 0; i < c; ++i) {
+                printf("%3.3f  ", mat[j * n + i]);
+            }
+            printf("\n");
+        }
+    }
+}
+
+void printVector(const float *vec, int n) {
+    for (int i = 0; i < n; ++i) {
+        printf("%3.3f  ", vec[i]);
+    }
+    printf("\n");
 }
