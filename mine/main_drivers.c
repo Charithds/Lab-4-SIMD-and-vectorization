@@ -81,8 +81,8 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 __m128 v1 = _mm_load_ps(&mat_a[i * n + j + 4]);
 
                 // Dot product
-                __m128 rslt_m0 = _mm_dp_ps(x0, v0, 241);
-                __m128 rslt_m1 = _mm_dp_ps(x1, v1, 241);
+                __m128 rslt_m0 = _mm_dp_ps(x0, v0, 0xff);
+                __m128 rslt_m1 = _mm_dp_ps(x1, v1, 0xff);
 
                 // load next 4 floats from input vector
                 x0 = _mm_load_ps(&vec_b[j + 8]);
@@ -94,8 +94,8 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 v1 = _mm_load_ps(&mat_a[i * n + j + 12]);
 
                 // Dot product
-                __m128 rslt_m2 = _mm_dp_ps(x0, v0, 241);
-                __m128 rslt_m3 = _mm_dp_ps(x1, v1, 241);
+                __m128 rslt_m2 = _mm_dp_ps(x0, v0, 0xff);
+                __m128 rslt_m3 = _mm_dp_ps(x1, v1, 0xff);
 
                 vec_c[i] += _mm_cvtss_f32(rslt_m0);
                 vec_c[i] += _mm_cvtss_f32(rslt_m1);
@@ -111,7 +111,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 __m128 v0 = _mm_load_ps(&mat_a[i * n + j]);
 
                 // dot product
-                __m128 rslt = _mm_dp_ps(x0, v0, 241);
+                __m128 rslt = _mm_dp_ps(x0, v0, 0xff);
 
                 vec_c[i] += _mm_cvtss_f32(rslt);
             }
