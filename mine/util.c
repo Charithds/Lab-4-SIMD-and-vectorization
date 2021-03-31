@@ -16,7 +16,7 @@ double Average(double *times, int numSamples) {
 }
 
 double elapsed_time(clock_t tic, clock_t toc) {
-    return (double)(toc - tic) / CLOCKS_PER_SEC;
+    return (double)(toc - tic) / CLOCKS_PER_SEC * 1000;
 }
 
 int getArguments(int argc, char *argv[], int *n, short *mat_vec_ver, short *mat_mat_ver, short *c_ver, short *sse_ver,
