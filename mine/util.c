@@ -49,30 +49,3 @@ void matrixCreationNByN_1D(int r, int c, float **mat_a) {
         }
     }
 }
-
-void printNByCMat(const float *mat, int n, int c) {
-    if (mat != NULL) {
-        for (int j = 0; j < n; ++j) {
-            for (int i = 0; i < c; ++i) {
-                printf("%3.3f  ", mat[j * n + i]);
-            }
-            printf("\n");
-        }
-    }
-}
-
-
-
-void printVector(const float *vec, int n) {
-    for (int i = 0; i < n; ++i) {
-        printf("%3.3f  ", vec[i]);
-    }
-    printf("\n");
-}
-
-void print_vector_ps(__m128 v) {
-    const float *sv = (float *) &v;
-
-    printf("%f %f %f %f\n",
-           sv[0], sv[1], sv[2], sv[3]);
-}
