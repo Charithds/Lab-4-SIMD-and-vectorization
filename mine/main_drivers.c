@@ -74,6 +74,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     // printNByCMat(&mat_a, n, n);
 
     for (int i = 0; i < n; i += 1) {
+        vec_c[i] = 0.0;
         int j = 0;
         for (int k = 0; k < unroll16Size; k++) {
             for (; j < unrolled_num; j += 16) {
