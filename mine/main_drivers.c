@@ -80,10 +80,10 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
 
                 // load next 16 floats from input vector
                 printf("IM here\n");
-                __m512 x = _mm512_load_ps(vec_b + j);
+                __m512 x = _mm512_load_ps(&vec_b[j]);
                 // __m512 v = _mm512_load_ps(&vec_b[j]);
                 printf("IM here too\n");
-                printf("%d %d %d", i, n, j);
+                printf("vars %d %d %d\n", i, n, j);
                 __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
                 printf("IM here three\n");
                 __m512 xv = _mm512_mul_ps(x, v);
