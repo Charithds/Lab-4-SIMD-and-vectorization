@@ -9,7 +9,7 @@
 #include "main_drivers.h"
 #include "util.h"
 
-#define XMM_ALIGNMENT_BYTES 16
+#define XMM_ALIGNMENT_BYTES 32
 #define checkMem(mem) if(!mem){fprintf(stderr, "Memory allocation failed\n"),abort();}
 #define COLUMNS 200
 
