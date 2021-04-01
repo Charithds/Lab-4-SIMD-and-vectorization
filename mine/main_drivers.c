@@ -86,6 +86,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 printf("Im here 5 %f\n", result);
             }
         }
+        /*
         if (rest > 0) {
             int mask = (1 << rest) - 1;
             printf("mask is %d\n", mask);
@@ -112,6 +113,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             float result = _mm512_reduce_add_ps(xv);
             vec_c[i] += result;
         }
+        */
     }
    printVector(vec_c, n);
 }
