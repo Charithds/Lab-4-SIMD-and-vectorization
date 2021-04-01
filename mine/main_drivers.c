@@ -81,7 +81,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         }
         if (rest > 0) {
             int mask = (1 << rest) - 1;
-            printf("mask is %d", mask);
+            printf("mask is %d\n", mask);
             float x_e[16] = {
                 0., 0., 0., 0.,
                 0., 0., 0., 0.,
