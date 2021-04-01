@@ -62,11 +62,13 @@ void driveMatVecCPU_listing6(const float *mat, const float *vec_in, float *vec_o
 
 // listing 6 sse
 void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float *vec_b) {
+    printf("im in 1\n");
     // NOTE : Matrix and Vector both must have dimensions which are multiples of 4
     int unroll16Size = n / 16;  // expect an integer division
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
+    printf("im in 2\n");
     float x_e[16] = {
         0., 0., 0., 0.,
         0., 0., 0., 0.,
@@ -80,8 +82,10 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         0., 0., 0., 0.,
     };
 
+    printf("im in 3\n");
     for (int i = 0; i < n; i+=1) {
         // printf("Running loop %d\n", i);
+        printf("im in 4\n");
         vec_c[i] = 0.0;
         int j = 0;
         for (int k = 0; k < unroll16Size; k++) {
