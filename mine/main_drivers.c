@@ -108,10 +108,10 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             float result = _mm512_reduce_add_ps(xv);
             printf("Im here four\n");
             vec_c[i] += result;
-            printf("Im here five %d\n", result);
+            printf("Im here five %f\n", result);
         }
     }
-//    printVector(vec_c, n);
+   printVector(vec_c, n);
 }
 
 void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n) {
