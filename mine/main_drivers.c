@@ -81,7 +81,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     };
 
     for (int i = 0; i < n; i+=1) {
-        printf("Running loop %d\n", i);
+        // printf("Running loop %d\n", i);
         vec_c[i] = 0.0;
         int j = 0;
         for (int k = 0; k < unroll16Size; ++k) {
@@ -95,7 +95,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         }
         if (rest > 0) {
             int mask = (1 << rest) - 1;
-            memcpy(&x_e[0], &vec_b[j], rest * 32);
+            memcpy(&x_e, &vec_b[j], rest * 32);
             memcpy(&v_e, &mat_a[i * n + j], rest * 32);
             __m512 x = _mm512_load_ps(&x_e[0]);
             __m512 v = _mm512_load_ps(&v_e[0]);
@@ -104,7 +104,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             vec_c[i] += result;
         }
     }
-   printVector(vec_c, n);
+//    printVector(vec_c, n);
 }
 
 void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n) {
