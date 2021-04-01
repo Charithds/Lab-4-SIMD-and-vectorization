@@ -95,6 +95,8 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 0., 0., 0., 0.,
             };
             memcpy(x_e, &vec_b[j], rest * sizeof(*x_e));
+            printVector(&vec_b, rest);
+            printVector(&x_e, 16);
             memcpy(v_e, &mat_a[i * n + j], rest * sizeof(*v_e));
             __m512 x = _mm512_load_ps(&x_e[0]);
             __m512 v = _mm512_load_ps(&v_e[0]);
