@@ -73,7 +73,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         int j = 0;
         for (int k = 0; k < unroll16Size; k++) {
             for (; j < unrolled_num; j += 16) {
-                printf("Im here 1\n");
+                printf("Im here %d %d %d %d\n", n, i, j, k);
                 __m512 x = _mm512_load_ps(&vec_b[j]);
                 printf("Im here 2\n");
                 __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
