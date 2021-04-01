@@ -79,18 +79,14 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 vec_c[i] += result;
             }
         }
-        // if (rest > 0) {
-        //     for (j = unrolled_num; j < n; j += 4) {
-
-        //         __m128 x0 = _mm_load_ps(&vec_b[j]);
-        //         __m128 v0 = _mm_load_ps(&mat_a[i * n + j]);
-
-        //         // dot product
-        //         __m128 rslt = _mm_dp_ps(x0, v0, 0xff);
-
-        //         vec_c[i] += _mm_cvtss_f32(rslt);
-        //     }
-        // }
+        if (rest > 0) {
+            int mask = (1 << rest) - 1;
+            __m512 x = _mm512_load_ps(&vec_b[j]);
+            __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
+            __m512 xv = _mm512_mul_ps(x, v);
+            float result = _mm512_mask_reduce_add_ps(mask, xv);
+            vec_c[i] += result;
+        }
     }
 //    printVector(vec_c, n);
 }
