@@ -67,7 +67,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
-    for (int i = 0; i < n; i += 1) {
+    for (int i = 0; i < n; i++) {
         printf("Running loop %d\n", i);
         vec_c[i] = 0.0;
         int j = 0;
