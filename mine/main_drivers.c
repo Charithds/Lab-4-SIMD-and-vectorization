@@ -81,8 +81,23 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         }
         if (rest > 0) {
             int mask = (1 << rest) - 1;
-            __m512 x = _mm512_load_ps(&vec_b[j]);
-            __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
+            printf("mask is %d", mask);
+            float x_e[16] = {
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+            };
+            float v_e[16] = {
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+                0., 0., 0., 0.,
+            };
+            memcpy(x_e, &vec_b[j], rest * sizeof(*x_e));
+            memcpy(v_e, &mat_a[i * n + j], rest * sizeof(*v_e));
+            __m512 x = _mm512_load_ps(&x_e[0]);
+            __m512 v = _mm512_load_ps(&v_e[0]);
             __m512 xv = _mm512_mul_ps(x, v);
             float result = _mm512_mask_reduce_add_ps(mask, xv);
             vec_c[i] += result;
