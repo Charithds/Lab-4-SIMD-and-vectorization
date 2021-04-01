@@ -73,11 +73,16 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         int j = 0;
         for (int k = 0; k < unroll16Size; k++) {
             for (; j < unrolled_num; j += 16) {
+                printf("Im here 1\n");
                 __m512 x = _mm512_load_ps(&vec_b[j]);
+                printf("Im here 2\n");
                 __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
+                printf("Im here 3\n");
                 __m512 xv = _mm512_mul_ps(x, v);
+                printf("Im here 4\n");
                 float result = _mm512_reduce_add_ps(xv);
                 vec_c[i] += result;
+                printf("Im here 5 %f\n", result);
             }
         }
         if (rest > 0) {
@@ -100,16 +105,11 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             // printVector(&x_e, 16);
             memcpy(&v_e, &mat_a[i * n + j], rest * 32);
             __m512 x = _mm512_load_ps(&x_e[0]);
-            printf("Im here\n");
             __m512 v = _mm512_load_ps(&v_e[0]);
-            printf("Im here too\n");
             __m512 xv = _mm512_mul_ps(x, v);
-            printf("Im here threes\n");
             // _mm512_reduce_add_ps
             float result = _mm512_reduce_add_ps(xv);
-            printf("Im here four\n");
             vec_c[i] += result;
-            printf("Im here five %f\n", result);
         }
     }
    printVector(vec_c, n);
