@@ -103,9 +103,10 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             __m512 v = _mm512_load_ps(&v_e[0]);
             printf("Im here too\n");
             __m512 xv = _mm512_mul_ps(x, v);
-            printf("Im here three\n");
+            printf("Im here threes\n");
             // _mm512_reduce_add_ps
             float result = _mm512_reduce_add_ps(xv);
+            printf("Im here four\n");
             vec_c[i] += result;
         }
     }
