@@ -62,13 +62,11 @@ void driveMatVecCPU_listing6(const float *mat, const float *vec_in, float *vec_o
 
 // listing 6 sse
 void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float *vec_b) {
-    printf("im in 1\n");
     // NOTE : Matrix and Vector both must have dimensions which are multiples of 4
     int unroll16Size = n / 16;  // expect an integer division
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
-    printf("im in 2\n");
     float x_e[16] = {
         0., 0., 0., 0.,
         0., 0., 0., 0.,
@@ -81,6 +79,9 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         0., 0., 0., 0.,
         0., 0., 0., 0.,
     };
+    if (rest > 0) {
+        memcpy(&x_e, &vec_b[unrolled_num], rest * 32);
+    }
 
     for (int i = 0; i < n; i+=1) {
         vec_c[i] = 0.0;
@@ -95,10 +96,8 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             }
         }
         if (rest > 0) {
-            printf("im in rest");
             int mask = (1 << rest) - 1;
-            memcpy(&x_e, &vec_b[j], rest * 32);
-            memcpy(&v_e, &mat_a[i * n + j], rest * 32);
+            memcpy(&v_e, &mat_a[unrolled_num], rest * 32);
             __m512 x = _mm512_load_ps(&x_e);
             __m512 v = _mm512_load_ps(&v_e);
             __m512 xv = _mm512_mul_ps(x, v);
