@@ -88,7 +88,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             for (; j < unrolled_num; j += 16) {
                 printf("Im here %d %d %d %d\n", n, i, j, k);
                 memcpy(&x_e[0], &vec_b[j], 16 * 32);
-                __m512 x = _mm512_load_ps(x_e);
+                __m512 x = _mm512_load_ps(&x_e);
                 printf("Im here 2\n");
                 printVector(&mat_a[i * n + j], 16);
                 memcpy(&v_e, &mat_a[i * n + j], 16 * 32);
@@ -103,20 +103,13 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         }
         if (rest > 0) {
             int mask = (1 << rest) - 1;
-            printf("mask is %d\n", mask);
             memcpy(&x_e[0], &vec_b[j], rest * 32);
-            // printVector(vec_b, n);
-            // printVector(&x_e, 16);
             memcpy(&v_e, &mat_a[i * n + j], rest * 32);
             __m512 x = _mm512_load_ps(&x_e[0]);
             __m512 v = _mm512_load_ps(&v_e[0]);
             __m512 xv = _mm512_mul_ps(x, v);
-            // _mm512_reduce_add_ps
             float result = _mm512_mask_reduce_add_ps(mask, xv);
             vec_c[i] += result;
-
-            // _mm_free(x_e);
-            // _mm_free(v_e);
         }
     }
    printVector(vec_c, n);
