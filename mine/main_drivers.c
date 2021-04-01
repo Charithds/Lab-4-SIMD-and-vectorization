@@ -86,6 +86,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
         int j = 0;
         for (int k = 0; k < unroll16Size; ++k) {
             for (; j < unrolled_num; j += 16) {
+                printf("im in");
                 __m512 x = _mm512_load_ps(&vec_b[j]);
                 __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
                 __m512 xv = _mm512_mul_ps(x, v);
@@ -94,6 +95,7 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
             }
         }
         if (rest > 0) {
+            printf("im in rest");
             int mask = (1 << rest) - 1;
             memcpy(&x_e, &vec_b[j], rest * 32);
             memcpy(&v_e, &mat_a[i * n + j], rest * 32);
