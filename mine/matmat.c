@@ -26,18 +26,6 @@ int main(int argc, char *argv[]) {
 		printf("Program will create %d x %d matrix and a %dx%d vector for calculations\n", n, n, n, n);
 		
 		printf("\nRunning listing 7 Program\n");
-		driveMatVecCPU_listing7(n);
-
-/*
-		out_vec_simple_list6 = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
-		checkMem(out_vec_simple_list6)
-		printf("\nRunning listing 6 Program\n");
-		driveMatVecCPU_listing6(mat0, in_vec, out_vec_simple_list6, n);
-
-		out_vec_sse = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
-		checkMem(out_vec_sse)
-		printf("\nRunning listing 6 sse version\n");
-		driveMatVecSSE(mat0, in_vec, out_vec_sse, n);
-		// */
+		driveMatMatCPU_listing7(n);
     return 0;
 }
