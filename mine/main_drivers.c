@@ -161,14 +161,14 @@ void driveMatMatCPU_listing7(int n) {
 void matmat_listing7_SSE(int n, float *mat_c, const float *mat_a, const float *mat_b) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j+=4) {
-            __m128i vR = _mm_setzero_si128();
+            __m128 vR = _mm_setzero_ps();
             for (int k = 0; k < n; k++) {
-                __m128i vA = _mm_set1_epi32(mat_a[i * n + k]);  // load+broadcast is much cheaper than MOVD + 3 inserts (or especially 4x insert, which your new code is doing)
-                __m128i vB = _mm_loadu_si128((__m128i*)&mat_b[k * n + j]);  // mat2[k][j+0..3]
-                vR = _mm_add_epi32(vR, _mm_mullo_epi32(vA, vB));
+                __m128 vA = _mm_set1_ps(mat_a[i * n + k]);  // load+broadcast is much cheaper than MOVD + 3 inserts (or especially 4x insert, which your new code is doing)
+                __m128 vB = _mm_loadu_ps((__m128i*)&mat_b[k * n + j]);  // mat2[k][j+0..3]
+                vR = _mm_add_ps(vR, _mm_mul_ps(vA, vB));
                 mat_c[i * n + j] += mat_a[i * n + k] * mat_b[k * n + j];
             }
-            _mm_storeu_si128((__m128i*)&mat_c[i * n+ j], vR);
+            _mm_storeu_ps((__m128*)&mat_c[i * n+ j], vR);
         }
     }
 }
