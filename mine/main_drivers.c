@@ -6,7 +6,7 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 500
+#define REPEATED_TIMES 1
 
 // Matrix Vector Drivers
 void matvec_simple_listing5(int n, float *vec_c,
@@ -147,6 +147,12 @@ void driveMatMatCPU_listing7(int n) {
         memset(mat_ans_c, 0, sizeof(float) * n *n);
         clock_t tic = clock();
         matmat_listing7(n, mat_ans_c, mat0, mat1);
+        printNByCMat(mat0, n, n);
+        printf("Done \n");
+        printNByCMat(mat1, n, n);
+        printf("Done \n");
+        printNByCMat(mat_ans_c, n, n);
+        printf("Done \n");
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
