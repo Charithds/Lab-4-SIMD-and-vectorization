@@ -6,7 +6,7 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 200
+#define REPEATED_TIMES 1
 
 static float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
@@ -171,6 +171,12 @@ void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n
         clock_t tic = clock();
         matvec_unrolled_16sse(n, vec_out, mat, vec_in);
         clock_t toc = clock();
+        printNByCMat(mat, n, n);
+        printf("Done \n");
+        printVector(vec_in, n);
+        printf("Done \n");
+        printVector(vec_out, n);
+        printf("Done \n");
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
     }
