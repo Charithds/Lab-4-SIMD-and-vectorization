@@ -2,7 +2,7 @@
 #define ACA_LAB3_DRIVERS_H
 
 // Matrix X Vector versions
-void driveMatVecCPU_listing5(const float *mat, const float *vec_in, float *vec_out, int n);
+void driveMatVecCPU_listing5(int n);
 
 void driveMatVecCPU_listing6(const float *mat, const float *vec_in, float *vec_out, int n);
 

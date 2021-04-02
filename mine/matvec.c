@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 		out_vec_simple = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
 		checkMem(out_vec_simple)
 		printf("\nRunning listing 5 Program\n");
-		driveMatVecCPU_listing5(mat0, in_vec, out_vec_simple, n);
+		driveMatVecCPU_listing5(n);
 
 		out_vec_simple_list6 = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
 		checkMem(out_vec_simple_list6)

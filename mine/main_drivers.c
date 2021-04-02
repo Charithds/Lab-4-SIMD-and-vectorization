@@ -8,6 +8,20 @@
 
 #define REPEATED_TIMES 1
 
+static float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *in_vec __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *vec_out __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+/*
+static float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *mat_ans_sse __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *mat_ans_auto __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+
+static float *out_vec_simple __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *out_vec_sse __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *out_vec_auto __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+static float *out_vec_simple_list6 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+*/
 // Matrix Vector Drivers
 void matvec_simple_listing5(int n, float *vec_c,
                             const float *mat_a, const float *vec_b) {
@@ -16,19 +30,28 @@ void matvec_simple_listing5(int n, float *vec_c,
             vec_c[i] += mat_a[i * n + j] * vec_b[j];
 }
 
-void driveMatVecCPU_listing5(const float *mat, const float *vec_in, float *vec_out, int n) {
+void driveMatVecCPU_listing5(int n) {
     double mean;
     double times[REPEATED_TIMES];
+
+    matrixCreationNByN_1D(n, n, &mat0);
+    matrixCreationNByN_1D(n, 1, &in_vec);
+    vec_out = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
+
     for (int i = 0; i < REPEATED_TIMES; ++i) {
         memset(vec_out, 0, sizeof(float) * n);
         clock_t tic = clock();
-        matvec_simple_listing5(n, vec_out, mat, vec_in);
+        matvec_simple_listing5(n, vec_out, mat0, in_vec);
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
     }
     mean = Average(times, REPEATED_TIMES);
     printf("Average time : %f\n", mean);
+    
+    _mm_free(in_vec);
+    _mm_free(mat0);
+    _mm_free(vec_out);
 }
 
 // listing 6
@@ -147,12 +170,12 @@ void driveMatMatCPU_listing7(int n) {
         memset(mat_ans_c, 0, sizeof(float) * n *n);
         clock_t tic = clock();
         matmat_listing7(n, mat_ans_c, mat0, mat1);
-        printNByCMat(mat0, n, n);
-        printf("Done \n");
-        printNByCMat(mat1, n, n);
-        printf("Done \n");
-        printNByCMat(mat_ans_c, n, n);
-        printf("Done \n");
+        // printNByCMat(mat0, n, n);
+        // printf("Done \n");
+        // printNByCMat(mat1, n, n);
+        // printf("Done \n");
+        // printNByCMat(mat_ans_c, n, n);
+        // printf("Done \n");
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
