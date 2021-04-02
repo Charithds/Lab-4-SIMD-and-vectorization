@@ -6,14 +6,14 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 1
+#define REPEATED_TIMES 200
 
 static float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *in_vec __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *vec_out __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-/*
 static float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+/*
 static float *mat_ans_sse __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat_ans_auto __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 
@@ -158,10 +158,6 @@ void matmat_listing7(int n, float *mat_c, const float *mat_a, const float *mat_b
 void driveMatMatCPU_listing7(int n) {
     double mean;
     double times[REPEATED_TIMES];
-    
-    float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-    float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-    float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 
     for (int i = 0; i < REPEATED_TIMES; ++i) {
         matrixCreationNByN_1D(n, n, &mat0);
