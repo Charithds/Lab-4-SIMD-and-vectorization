@@ -17,11 +17,10 @@ static float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float **mat_0;
 
 // Matrix Vector Drivers
-void matvec_simple_listing5(int n, float *vec_c, const float *mat_a, const float *vec_b) {
+void matvec_simple_listing5(int n, float *vec_c, const float **mat_a, const float *vec_b) {
     for (int i = 0; i < n; i++) {
-        int row = i * n;
         for (int j = 0; j < n; j++) {
-            vec_c[i] += mat_a[row + j] * vec_b[j];
+            vec_c[i] += mat_a[i][j] * vec_b[j];
         }
     }
 }
