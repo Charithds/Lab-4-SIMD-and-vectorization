@@ -6,7 +6,7 @@
 #include "util.h"
 #include "main_drivers.h"
 
-#define REPEATED_TIMES 1
+#define REPEATED_TIMES 200
 
 static float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
