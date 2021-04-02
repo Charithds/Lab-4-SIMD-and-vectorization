@@ -48,3 +48,11 @@ void matrixCreationNByN_1D(int r, int c, float **mat_a) {
         }
     }
 }
+
+void matrixCreationNByN_2D(int n, float **mat_a) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            mat_a[i][j] = rand() / (float) RAND_MAX;;
+        }
+    }
+}
