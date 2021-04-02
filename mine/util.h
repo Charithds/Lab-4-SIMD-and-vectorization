@@ -13,6 +13,5 @@ void matrixCreationNByN_1D(int r, int c, float **mat_a);
 double elapsed_time(clock_t tic, clock_t toc);
 double Average(double *times, int numSamples);
 
-int getArguments(int argc, char *argv[], int *n, short *mat_vec_ver, short *mat_mat_ver, short *c_ver, short *sse_ver,
-                 short *a_vec_ver, short *test, short *listing6);
+int getArguments(int argc, char *argv[], int *n);
 #endif
