@@ -171,12 +171,12 @@ void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n
         clock_t tic = clock();
         matvec_unrolled_16sse(n, vec_out, mat, vec_in);
         clock_t toc = clock();
-        printNByCMat(mat, n, n);
-        printf("Done \n");
-        printVector(vec_in, n);
-        printf("Done \n");
-        printVector(vec_out, n);
-        printf("Done \n");
+        // printNByCMat(mat, n, n);
+        // printf("Done \n");
+        // printVector(vec_in, n);
+        // printf("Done \n");
+        // printVector(vec_out, n);
+        // printf("Done \n");
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
     }
