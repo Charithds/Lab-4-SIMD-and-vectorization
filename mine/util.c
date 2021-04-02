@@ -44,7 +44,7 @@ void matrixCreationNByN_1D(int r, int c, float **mat_a) {
     *mat_a = _mm_malloc(sizeof(**mat_a) * r * c, XMM_ALIGNMENT_BYTES);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
-            (*mat_a)[i * c + j] = rand() / (float) RAND_MAX;;
+            (*mat_a)[i * c + j] = rand() / (float) RAND_MAX;
         }
     }
 }

@@ -55,11 +55,35 @@ int main(int argc, char *argv[]) {
     srand((unsigned) time(&t));
     getArguments(argc, argv, &n);
 
-    printf("Starting calculation...\n");
-    printf("All the times are shown in micro seconds...\n");
-		printf("Program will create %d x %d matrix and a %dx%d vector for calculations\n", n, n, n, n);
+    float matrix_a[n][n];
+    float matrix_b[n][n];
+    float result_matrix[n][n];
+    
+    // initialize arrays
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix_a[i][j] =  rand() / (float) RAND_MAX;
+            matrix_b[i][j] =  rand() / (float) RAND_MAX;
+            result_matrix[i][j] = 0.0f;
+        }
+    }
+
+    clock_t tic = clock();
+    for (int i = 0; i < n; i++) { // iterate over rows of matrix A/result matrix
+        for (int j = 0; j < n; j++) { // iterate over columns matrix B/result matrix
+            for (int k = 0; k < n; k++) { // iterate over columns of matrix A and rows of matrix B
+                result_matrix[i][j] += matrix_a[i][k]*matrix_b[k][j];
+            }
+        }
+    }
+    clock_t toc = clock();
+    double el_t = elapsed_time(tic, toc);
+    printf("Average time : %f\n", el_t);
+    // printf("Starting calculation...\n");
+    // printf("All the times are shown in micro seconds...\n");
+	// 	printf("Program will create %d x %d matrix and a %dx%d vector for calculations\n", n, n, n, n);
 		
-		printf("\nRunning listing 7 Program\n");
-		driveMatMatCPU_listing7(n);
-    return 0;
+	// 	printf("\nRunning listing 7 Program\n");
+	// 	driveMatMatCPU_listing7(n);
+    // return 0;
 }
