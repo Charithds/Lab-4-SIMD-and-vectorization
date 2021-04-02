@@ -158,6 +158,47 @@ void driveMatMatCPU_listing7(int n) {
     _mm_free(mat_ans_c);
 }
 
+void matmat_listing7_SSE(int n, float *mat_c, const float *mat_a, const float *mat_b) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j+=4) {
+            __m128i vR = _mm_setzero_si128();
+            for (int k = 0; k < n; k++) {
+                __m128i vA = _mm_set1_epi32(mat_a[i * n + k]);  // load+broadcast is much cheaper than MOVD + 3 inserts (or especially 4x insert, which your new code is doing)
+                __m128i vB = _mm_loadu_si128((__m128i*)&mat_b[k * n + j]);  // mat2[k][j+0..3]
+                vR = _mm_add_epi32(vR, _mm_mullo_epi32(vA, vB));
+                mat_c[i * n + j] += mat_a[i * n + k] * mat_b[k * n + j];
+            }
+            _mm_storeu_si128((__m128i*)&mat_c[i * n+ j], vR);
+        }
+    }
+}
+
+void driveMatMatCPU_listing7_SSE(int n) {
+    double mean;
+    double times[REPEATED_TIMES];
+    
+    float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+    float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+    float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+
+    for (int i = 0; i < REPEATED_TIMES; ++i) {
+        matrixCreationNByN_1D(n, n, &mat0);
+		matrixCreationNByN_1D(n, n, &mat1);
+		matrixCreationNByN_1D(n, n, &mat_ans_c);
+        memset(mat_ans_c, 0, sizeof(float) * n *n);
+        clock_t tic = clock();
+        matmat_listing7_SSE(n, mat_ans_c, mat0, mat1);
+        clock_t toc = clock();
+        double el_t = elapsed_time(tic, toc);
+        times[i] = el_t;
+    }
+    mean = Average(times, REPEATED_TIMES);
+    printf("Average time : %f\n", mean);
+    _mm_free(mat0);
+    _mm_free(mat1);
+    _mm_free(mat_ans_c);
+}
+
 void printNByCMat(const float *mat, int n, int c) {
     if (mat != NULL) {
         for (int j = 0; j < n; ++j) {

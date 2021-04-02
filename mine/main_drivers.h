@@ -8,6 +8,8 @@ void driveMatVecCPU_listing6(const float *mat, const float *vec_in, float *vec_o
 
 void driveMatMatCPU_listing7(int n);
 
+void driveMatMatCPU_listing7_SSE(int n);
+
 void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n);
 
 void driveMatVecAuto(const float *mat, const float *vec_in, float *vec_out, int n);

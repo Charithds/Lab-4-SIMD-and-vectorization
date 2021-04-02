@@ -27,5 +27,8 @@ int main(int argc, char *argv[]) {
 		
 		printf("\nRunning listing 7 Program\n");
 		driveMatMatCPU_listing7(n);
+
+		printf("\nRunning listing 7 SSE Program\n");
+		driveMatMatCPU_listing7_SSE(n);
     return 0;
 }
