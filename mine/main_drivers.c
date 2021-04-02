@@ -14,8 +14,6 @@ static float *in_vec __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *vec_out __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 
-static float **mat_0;
-
 // Matrix Vector Drivers
 void matvec_simple_listing5(int n, float *vec_c, const float **mat_a, const float *vec_b) {
     for (int i = 0; i < n; i++) {
@@ -31,22 +29,17 @@ void driveMatVecCPU_listing5(int n) {
 
     vec_out = _mm_malloc(sizeof(float) * n, XMM_ALIGNMENT_BYTES);
 
-    mat_0 = malloc(n * sizeof *mat_0);
-    for (int i=0; i<n; i++) {
-        mat_0[i] = malloc(n * sizeof *mat_0[i]);
-    }
-
     for (int i = 0; i < REPEATED_TIMES; ++i) {
         memset(vec_out, 0, sizeof(float) * n);
-        matrixCreationNByN_2D(n, mat_0);
+        matrixCreationNByN_1D(n, n, &mat0);
         matrixCreationNByN_1D(n, 1, &in_vec);
         clock_t tic = clock();
-        matvec_simple_listing5(n, vec_out, mat_0, in_vec);
+        matvec_simple_listing5(n, vec_out, mat0, in_vec);
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
         _mm_free(in_vec);
-        _mm_free(mat_0);
+        _mm_free(mat0);
     }
     mean = Average(times, REPEATED_TIMES);
     printf("Average time : %f\n", mean);
