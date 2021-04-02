@@ -41,7 +41,7 @@ void driveMatVecCPU_listing5(int n) {
         matrixCreationNByN_2D(n, mat_0);
         matrixCreationNByN_1D(n, 1, &in_vec);
         clock_t tic = clock();
-        matvec_simple_listing5(n, vec_out, mat0, in_vec);
+        matvec_simple_listing5(n, vec_out, mat_0, in_vec);
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
