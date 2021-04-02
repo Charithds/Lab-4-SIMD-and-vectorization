@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 	int n, cols = COLUMNS;
     time_t t;
     srand((unsigned) time(&t));
-    getArguments(argc, argv, &n, &mat_vec_ver, &mat_mat_ver, &c_ver, &sse_ver, &a_vec_ver, &test, &listing6);
+    getArguments(argc, argv, &n);
 
     matrixCreationNByN_1D(n, n, &mat0);
     checkMem(mat0)
@@ -59,6 +59,9 @@ int main(int argc, char *argv[]) {
 		printf("\nRunning listing 6 sse version\n");
 		driveMatVecSSE(mat0, in_vec, out_vec_sse, n);
 		
+		//printf("\nRunning listing 7 version\n");
+		//driveMatMatCPU_listing7(n);
+
 		_mm_free(in_vec);
 		_mm_free(out_vec_simple);
 		_mm_free(out_vec_simple_list6);

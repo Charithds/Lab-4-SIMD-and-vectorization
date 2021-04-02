@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <x86intrin.h>
-// #include <xmmintrin.h>
-// #include <smmintrin.h>
 #include "util.h"
 #include "main_drivers.h"
 
@@ -124,6 +122,41 @@ void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n
     printf("Average time : %f\n", mean);
 }
 
+void matmat_listing7(int n, float *mat_c, const float *mat_a, const float *mat_b) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                mat_c[i * n + j] += mat_a[i * n + k] * mat_b[k * n + j];
+            }
+        }
+    }
+}
+
+void driveMatMatCPU_listing7(int n) {
+    double mean;
+    double times[REPEATED_TIMES];
+    
+    float *mat0 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+    float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+    float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
+
+    for (int i = 0; i < REPEATED_TIMES; ++i) {
+        matrixCreationNByN_1D(n, n, &mat0);
+		matrixCreationNByN_1D(n, n, &mat1);
+		matrixCreationNByN_1D(n, n, &mat_ans_c);
+        memset(mat_ans_c, 0, sizeof(float) * n *n);
+        clock_t tic = clock();
+        matmat_listing7(n, mat_ans_c, mat0, mat1);
+        clock_t toc = clock();
+        double el_t = elapsed_time(tic, toc);
+        times[i] = el_t;
+    }
+    mean = Average(times, REPEATED_TIMES);
+    printf("Average time : %f\n", mean);
+    _mm_free(mat0);
+    _mm_free(mat1);
+    _mm_free(mat_ans_c);
+}
 
 void printNByCMat(const float *mat, int n, int c) {
     if (mat != NULL) {
