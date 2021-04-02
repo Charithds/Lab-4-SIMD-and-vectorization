@@ -13,21 +13,15 @@ static float *mat1 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *in_vec __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *vec_out __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 static float *mat_ans_c __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-/*
-static float *mat_ans_sse __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-static float *mat_ans_auto __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
 
-static float *out_vec_simple __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-static float *out_vec_sse __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-static float *out_vec_auto __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-static float *out_vec_simple_list6 __attribute__((aligned (XMM_ALIGNMENT_BYTES)));
-*/
 // Matrix Vector Drivers
-void matvec_simple_listing5(int n, float *vec_c,
-                            const float *mat_a, const float *vec_b) {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            vec_c[i] += mat_a[i * n + j] * vec_b[j];
+void matvec_simple_listing5(int n, float *vec_c, const float *mat_a, const float *vec_b) {
+    for (int i = 0; i < n; i++) {
+        int row = i * n;
+        for (int j = 0; j < n; j++) {
+            vec_c[i] += mat_a[row + j] * vec_b[j];
+        }
+    }
 }
 
 void driveMatVecCPU_listing5(int n) {
@@ -95,25 +89,6 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
     int unrolled_num = unroll16Size * 16;
     int rest = n - unrolled_num;
 
-
-/*
-    float x_e[16] = {
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-    };
-    float v_e[16] = {
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-        0., 0., 0., 0.,
-    };
-    if (rest > 0) {
-        memcpy(&x_e, &vec_b[unrolled_num], rest * 32);
-    }
-    */
-
     for (int i = 0; i < n; i+=1) {
         vec_c[i] = 0.0;
         int j = 0;
@@ -140,26 +115,6 @@ void matvec_unrolled_16sse(int n, float *vec_c, const float *mat_a, const float 
                 vec_c[i] += _mm_cvtss_f32(rslt);
             }
         }
-        /*
-        for (int k = 0; k < unroll16Size; k++) {
-            for (; j < unrolled_num; j += 16) {
-                __m512 x = _mm512_load_ps(&vec_b[j]);
-                __m512 v = _mm512_load_ps(&mat_a[i * n + j]);
-                __m512 xv = _mm512_mul_ps(x, v);
-                float result = _mm512_reduce_add_ps(xv);
-                vec_c[i] += result;
-            }
-        }
-        if (rest > 0) {
-            int mask = (1 << rest) - 1;
-            memcpy(&v_e, &mat_a[unrolled_num], rest * 32);
-            __m512 x = _mm512_load_ps(&x_e);
-            __m512 v = _mm512_load_ps(&v_e);
-            __m512 xv = _mm512_mul_ps(x, v);
-            float result = _mm512_mask_reduce_add_ps(mask, xv);
-            vec_c[i] += result;
-        }
-        */
     }
 }
 
@@ -171,12 +126,6 @@ void driveMatVecSSE(const float *mat, const float *vec_in, float *vec_out, int n
         clock_t tic = clock();
         matvec_unrolled_16sse(n, vec_out, mat, vec_in);
         clock_t toc = clock();
-        // printNByCMat(mat, n, n);
-        // printf("Done \n");
-        // printVector(vec_in, n);
-        // printf("Done \n");
-        // printVector(vec_out, n);
-        // printf("Done \n");
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
     }
@@ -205,12 +154,6 @@ void driveMatMatCPU_listing7(int n) {
         memset(mat_ans_c, 0, sizeof(float) * n *n);
         clock_t tic = clock();
         matmat_listing7(n, mat_ans_c, mat0, mat1);
-        // printNByCMat(mat0, n, n);
-        // printf("Done \n");
-        // printNByCMat(mat1, n, n);
-        // printf("Done \n");
-        // printNByCMat(mat_ans_c, n, n);
-        // printf("Done \n");
         clock_t toc = clock();
         double el_t = elapsed_time(tic, toc);
         times[i] = el_t;
