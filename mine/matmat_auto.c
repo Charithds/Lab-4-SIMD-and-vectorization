@@ -33,8 +33,8 @@ void driveMatMatCPU_listing7(int n) {
 
     for (int i = 0; i < REPEATED_TIMES; ++i) {
         matrixCreationNByN_1D(n, n, &mat0);
-				matrixCreationNByN_1D(n, n, &mat1);
-				matrixCreationNByN_1D(n, n, &mat_ans_c);
+        matrixCreationNByN_1D(n, n, &mat1);
+        matrixCreationNByN_1D(n, n, &mat_ans_c);
         memset(mat_ans_c, 0, sizeof(float) * n *n);
         clock_t tic = clock();
         matmat_listing7(n, mat_ans_c, mat0, mat1);
@@ -61,8 +61,5 @@ int main(int argc, char *argv[]) {
 		
 		printf("\nRunning listing 7 Program\n");
 		driveMatMatCPU_listing7(n);
-
-		printf("\nRunning listing 7 SSE Program\n");
-		driveMatMatCPU_listing7_SSE(n);
     return 0;
 }
